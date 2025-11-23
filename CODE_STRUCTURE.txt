@@ -1,0 +1,583 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║              STARSPORTS - CODE STRUCTURE DOCUMENTATION            ║
+║                   Penjelasan Struktur & Alur Kode                 ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   OVERVIEW - ARSITEKTUR APLIKASI                                 █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+Aplikasi ini menggunakan arsitektur MVC sederhana:
+
+┌─────────────────────────────────────────────────────────────────┐
+│                        USER INTERFACE                           │
+│                      (index.php, edit.php)                      │
+└─────────────────────────────────────────────────────────────────┘
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      CONTROLLER LAYER                           │
+│            (create.php, update.php, delete.php)                 │
+└─────────────────────────────────────────────────────────────────┘
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       DATABASE LAYER                            │
+│                      (config.php + PDO)                         │
+└─────────────────────────────────────────────────────────────────┘
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                          MySQL DATABASE                         │
+│                        (starsports.sepatu)                      │
+└─────────────────────────────────────────────────────────────────┘
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   FILE STRUCTURE - PENJELASAN SETIAP FILE                        █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+📄 config.php
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: Konfigurasi database & helper functions
+Content:
+  ✓ Database credentials (host, user, pass, name)
+  ✓ PDO connection dengan error handling
+  ✓ Helper functions:
+    - formatRupiah(): Format angka jadi format Rupiah
+    - cleanInput(): Sanitasi input untuk keamanan
+
+Key Features:
+  • PDO dengan Prepared Statements
+  • Error handling try-catch
+  • UTF-8 charset
+  • Security options (ERRMODE_EXCEPTION)
+
+
+📄 index.php
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: Halaman utama - READ operation
+Content:
+  ✓ Tampilan tabel data sepatu
+  ✓ Statistics dashboard (total produk, stok, merk)
+  ✓ Search/filter feature
+  ✓ Modal form untuk tambah data
+  ✓ Tombol Edit & Delete
+  ✓ Alert messages (success/error)
+
+Key Features:
+  • Dynamic data loading dari database
+  • Search dengan LIKE query
+  • Modal Bootstrap untuk form
+  • JavaScript untuk delete confirmation
+  • Animasi CSS
+  • Responsive layout
+
+Functions:
+  • getAllSepatu($pdo, $search): Ambil semua data + filter
+
+
+📄 create.php
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: CREATE operation - Tambah data baru
+Content:
+  ✓ Validasi input (server-side)
+  ✓ Sanitasi data
+  ✓ Insert ke database dengan Prepared Statement
+  ✓ Redirect dengan message
+
+Flow:
+  1. Terima data POST dari form
+  2. Validasi semua field wajib diisi
+  3. Validasi tipe data (harga & stok = angka positif)
+  4. Sanitasi input dengan cleanInput()
+  5. Prepare SQL statement
+  6. Execute dengan parameter binding
+  7. Redirect ke index.php dengan success message
+
+Security:
+  • Prepared Statement (prevent SQL Injection)
+  • Input validation
+  • Data sanitization
+  • Error handling
+
+
+📄 edit.php
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: Tampilan form edit - UPDATE operation (Part 1)
+Content:
+  ✓ Load data existing berdasarkan ID
+  ✓ Form pre-filled dengan data lama
+  ✓ Dropdown untuk merk, kategori, ukuran
+  ✓ Client-side validation
+
+Flow:
+  1. Terima ID dari URL parameter (?id=X)
+  2. Query data sepatu berdasarkan ID
+  3. Tampilkan form dengan value=data_lama
+  4. Submit ke update.php
+
+Key Features:
+  • Data lama ditampilkan di form
+  • Dropdown dengan selected value
+  • Validasi JavaScript
+  • Cancel button (kembali ke index)
+
+
+📄 update.php
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: UPDATE operation - Proses update data (Part 2)
+Content:
+  ✓ Validasi input (sama seperti create.php)
+  ✓ Check apakah ID ada
+  ✓ Update database dengan Prepared Statement
+  ✓ Redirect dengan message
+
+Flow:
+  1. Terima data POST dari edit.php
+  2. Validasi input & ID
+  3. Check apakah data dengan ID tersebut ada
+  4. Prepare UPDATE SQL statement
+  5. Execute dengan parameter binding
+  6. Redirect ke index.php dengan success message
+
+Security:
+  • Sama seperti create.php
+  • Extra validation: check ID exists
+
+
+📄 delete.php
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: DELETE operation - Hapus data
+Content:
+  ✓ Validasi ID
+  ✓ Check apakah data ada
+  ✓ Delete dari database
+  ✓ Redirect dengan message
+
+Flow:
+  1. Terima ID dari URL parameter (?id=X)
+  2. Validate ID
+  3. Fetch nama_sepatu untuk message
+  4. Prepare DELETE SQL statement
+  5. Execute dengan parameter binding
+  6. Redirect ke index.php dengan success message
+
+Security:
+  • Prepared Statement
+  • ID validation
+  • Confirmation di frontend (JavaScript)
+
+
+📄 style.css
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: Custom styling & animations
+Content:
+  ✓ Color scheme (CSS variables)
+  ✓ Navbar styling
+  ✓ Hero section
+  ✓ Statistics cards
+  ✓ Table styling
+  ✓ Buttons & forms
+  ✓ Animations (fadeIn, slideUp, bounce)
+  ✓ Responsive breakpoints
+  ✓ Custom scrollbar
+
+Key Features:
+  • Gradient backgrounds
+  • Smooth animations
+  • Hover effects
+  • Mobile-first responsive
+  • Custom scrollbar
+  • Loading states
+
+
+📄 starsports_database.sql
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: Database schema & sample data
+Content:
+  ✓ CREATE DATABASE statement
+  ✓ CREATE TABLE statement (sepatu)
+  ✓ INSERT sample data (8 rows)
+
+Table Structure: sepatu
+  • id (INT, PRIMARY KEY, AUTO_INCREMENT)
+  • nama_sepatu (VARCHAR(100), NOT NULL)
+  • merk (VARCHAR(50), NOT NULL)
+  • kategori (VARCHAR(50), NOT NULL)
+  • ukuran (VARCHAR(10), NOT NULL)
+  • warna (VARCHAR(30), NOT NULL)
+  • harga (DECIMAL(10,2), NOT NULL)
+  • stok (INT(11), NOT NULL)
+  • deskripsi (TEXT)
+  • gambar (VARCHAR(255), default: 'default.jpg')
+  • created_at (TIMESTAMP)
+  • updated_at (TIMESTAMP, auto-update)
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   DATA FLOW - BAGAIMANA DATA MENGALIR                            █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+1. CREATE (Tambah Data)
+━━━━━━━━━━━━━━━━━━━━━━━
+User Action:
+  index.php → Klik "Tambah Produk" → Modal muncul → Isi form → Klik "Simpan"
+
+Data Flow:
+  Form (POST) → create.php → Validasi → Sanitasi → Database (INSERT)
+                                    ↓
+  index.php ← Redirect dengan message ← Success/Error
+
+
+2. READ (Tampil Data)
+━━━━━━━━━━━━━━━━━━━━━━━
+User Action:
+  Browser → http://localhost/starsports → index.php load
+
+Data Flow:
+  index.php → getAllSepatu() → Database (SELECT) → Fetch results
+                                    ↓
+  Render HTML table ← Loop through results ← PDO fetchAll()
+
+
+3. UPDATE (Edit Data)
+━━━━━━━━━━━━━━━━━━━━━━━
+User Action:
+  index.php → Klik tombol "Edit" → edit.php load → Ubah data → Klik "Update"
+
+Data Flow:
+  Step 1: Load form
+    edit.php?id=X → Database (SELECT WHERE id=X) → Pre-fill form
+  
+  Step 2: Submit update
+    Form (POST) → update.php → Validasi → Database (UPDATE WHERE id=X)
+                                    ↓
+    index.php ← Redirect dengan message ← Success/Error
+
+
+4. DELETE (Hapus Data)
+━━━━━━━━━━━━━━━━━━━━━━━
+User Action:
+  index.php → Klik tombol "Delete" → Confirm dialog → OK
+
+Data Flow:
+  JavaScript confirm() → Yes → delete.php?id=X → Database (DELETE WHERE id=X)
+                                    ↓
+  index.php ← Redirect dengan message ← Success
+
+
+5. SEARCH (Cari Data)
+━━━━━━━━━━━━━━━━━━━━━━━
+User Action:
+  index.php → Ketik di search bar → Klik "Cari"
+
+Data Flow:
+  Form (GET) → index.php?search=keyword → getAllSepatu($pdo, $search)
+                                    ↓
+  Database (SELECT WHERE nama_sepatu LIKE %keyword% OR merk LIKE %keyword%)
+                                    ↓
+  Render filtered results ← Fetch results
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   SECURITY FEATURES - KEAMANAN APLIKASI                          █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+1. SQL Injection Prevention
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Prepared Statements dengan PDO
+✓ Parameter binding (:placeholder)
+✓ No direct SQL concatenation
+
+Example:
+  ❌ BAD:  $sql = "SELECT * FROM sepatu WHERE id = $id";
+  ✅ GOOD: $stmt = $pdo->prepare("SELECT * FROM sepatu WHERE id = :id");
+           $stmt->execute([':id' => $id]);
+
+
+2. XSS (Cross-Site Scripting) Prevention
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ htmlspecialchars() pada semua output
+✓ cleanInput() function untuk sanitasi
+
+Example:
+  ❌ BAD:  echo $sepatu['nama_sepatu'];
+  ✅ GOOD: echo htmlspecialchars($sepatu['nama_sepatu']);
+
+
+3. Input Validation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Required field validation
+✓ Data type validation (harga & stok = number)
+✓ Positive number validation (>= 0)
+✓ Server-side + client-side validation
+
+Example:
+  if (!is_numeric($harga) || $harga < 0) {
+      // Error handling
+  }
+
+
+4. Error Handling
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Try-catch blocks
+✓ PDO::ERRMODE_EXCEPTION
+✓ User-friendly error messages
+✓ No sensitive info in error messages
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   CODE BEST PRACTICES - YANG SUDAH DITERAPKAN                    █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+1. ✅ Separation of Concerns
+   • config.php: Database & utilities
+   • index.php: View/Display
+   • create/update/delete.php: Controllers
+
+2. ✅ DRY (Don't Repeat Yourself)
+   • cleanInput() function reusable
+   • formatRupiah() function reusable
+   • Prepared statement template consistent
+
+3. ✅ Meaningful Names
+   • Variable names jelas: $nama_sepatu, $harga
+   • Function names descriptive: getAllSepatu()
+
+4. ✅ Comments & Documentation
+   • Setiap file ada komentar header
+   • Complex logic dijelaskan
+
+5. ✅ Error Handling
+   • Try-catch everywhere
+   • Graceful degradation
+
+6. ✅ Security First
+   • Input validation
+   • Output encoding
+   • Prepared statements
+
+7. ✅ User Experience
+   • Loading states
+   • Success/error messages
+   • Confirmation dialogs
+   • Responsive design
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   DATABASE QUERIES - CONTOH SQL YANG DIGUNAKAN                   █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+1. SELECT ALL (Read)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SELECT * FROM sepatu ORDER BY id DESC
+
+
+2. SELECT WITH SEARCH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SELECT * FROM sepatu 
+WHERE nama_sepatu LIKE :search OR merk LIKE :search 
+ORDER BY id DESC
+
+
+3. SELECT BY ID
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SELECT * FROM sepatu WHERE id = :id
+
+
+4. INSERT (Create)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSERT INTO sepatu 
+(nama_sepatu, merk, kategori, ukuran, warna, harga, stok, deskripsi) 
+VALUES 
+(:nama_sepatu, :merk, :kategori, :ukuran, :warna, :harga, :stok, :deskripsi)
+
+
+5. UPDATE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+UPDATE sepatu SET 
+  nama_sepatu = :nama_sepatu,
+  merk = :merk,
+  kategori = :kategori,
+  ukuran = :ukuran,
+  warna = :warna,
+  harga = :harga,
+  stok = :stok,
+  deskripsi = :deskripsi
+WHERE id = :id
+
+
+6. DELETE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DELETE FROM sepatu WHERE id = :id
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   JAVASCRIPT FUNCTIONS - FUNGSI DI FRONTEND                      █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+1. confirmDelete(id, nama)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: Konfirmasi sebelum hapus
+Location: index.php (inline script)
+Logic:
+  function confirmDelete(id, nama) {
+      if(confirm(`Apakah Anda yakin ingin menghapus sepatu "${nama}"?`)) {
+          window.location.href = `delete.php?id=${id}`;
+      }
+  }
+
+
+2. Intersection Observer (Animation on Scroll)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: Trigger animasi saat scroll
+Location: index.php
+Logic:
+  - Observe elements dengan class .table-row-animate
+  - Saat visible di viewport, add class .visible
+  - CSS animation akan trigger
+
+
+3. Auto Dismiss Alerts
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Purpose: Hapus alert otomatis setelah 5 detik
+Location: index.php
+Logic:
+  setTimeout(function() {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(alert => {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+      });
+  }, 5000);
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   CSS ANIMATIONS - DAFTAR ANIMASI                                █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+1. @keyframes fadeIn
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Effect: Fade in dari bawah
+Used for: Cards, alerts, tables
+Duration: 0.8s
+
+
+2. @keyframes slideUp
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Effect: Slide up dari bawah
+Used for: Statistics cards
+Duration: 0.6s
+
+
+3. @keyframes bounce
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Effect: Bounce up and down
+Used for: Hero icon
+Duration: 2s (infinite)
+
+
+4. @keyframes rotate
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Effect: Rotate 360 degrees
+Used for: Brand icon
+Duration: 2s (infinite)
+
+
+5. @keyframes spin
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Effect: Spinner/loading
+Used for: Loading states
+Duration: 0.8s (infinite)
+
+
+6. Transition Effects
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Button hover: transform translateY(-2px)
+• Card hover: transform translateY(-10px)
+• Table row hover: transform scale(1.01)
+• All with smooth transition: 0.3s ease
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   RESPONSIVE BREAKPOINTS - MEDIA QUERIES                         █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+@media (max-width: 768px)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tablet & Mobile adjustments:
+  • Hero title: 3rem → 2rem
+  • Hero subtitle: 1.3rem → 1rem
+  • Hero icon: 8rem → 4rem
+  • Stat cards: full width
+  • Table: font-size reduced
+  • Button groups: stack vertically
+  • Form: single column
+
+
+█████████████████████████████████████████████████████████████████████
+█                                                                   █
+█   CUSTOMIZATION GUIDE - CARA MODIFIKASI                          █
+█                                                                   █
+█████████████████████████████████████████████████████████████████████
+
+1. Ganti Warna Theme
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+File: style.css
+Location: :root { ... }
+Variables:
+  --primary-color: #2563eb;    ← Ubah ini
+  --secondary-color: #1e40af;  ← Dan ini
+  --accent-color: #f59e0b;     ← Dan ini
+
+
+2. Tambah Field Baru
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Steps:
+  a. Database: ALTER TABLE sepatu ADD COLUMN nama_field TYPE;
+  b. index.php: Tambah <td> di table
+  c. edit.php: Tambah input field
+  d. create.php: Tambah di INSERT statement
+  e. update.php: Tambah di UPDATE statement
+
+
+3. Ubah Logo/Brand
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+File: index.php, edit.php
+Location: <a class="navbar-brand">
+Change:
+  • Icon: <i class="fas fa-running">
+  • Text: StarSports
+
+
+4. Tambah Kategori/Merk
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+File: index.php, edit.php
+Location: <select name="kategori"> atau <select name="merk">
+Add: <option value="New Brand">New Brand</option>
+
+
+█████████████████████████████████████████████████████████████████████
+
+                    END OF CODE STRUCTURE DOCUMENTATION
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                         © 2025 StarSports Team
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
