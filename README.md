@@ -4,7 +4,6 @@ Aplikasi web manajemen toko sepatu olahraga dengan operasi CRUD lengkap yang dib
 
 ## 🚀 Fitur Utama
 
-### ✅ Fitur Wajib
 - **CREATE**: Tambah data sepatu baru dengan validasi
 - **READ**: Tampilan tabel data sepatu yang dinamis
 - **UPDATE**: Edit data sepatu dengan form yang sudah terisi data lama
@@ -12,13 +11,13 @@ Aplikasi web manajemen toko sepatu olahraga dengan operasi CRUD lengkap yang dib
 - **UI Modern**: Menggunakan Bootstrap 5 dengan custom styling
 - **Animasi**: Smooth animations untuk meningkatkan user experience
 
-### 🌟 Fitur Bonus (Nilai Tambahan)
-- ✅ **Pencarian**: Fitur search berdasarkan nama sepatu atau merk
-- ✅ **Validasi**: Validasi harga dan stok harus berupa angka positif
-- ✅ **Prepared Statement**: Menggunakan PDO Prepared Statement untuk keamanan
-- ✅ **Statistics Dashboard**: Menampilkan total produk, stok, dan merk
-- ✅ **Responsive Design**: Tampilan menyesuaikan berbagai ukuran layar
-- ✅ **Alert Messages**: Notifikasi sukses/error dengan auto-dismiss
+Fitur Tambahan
+-  **Pencarian**: Fitur search berdasarkan nama sepatu atau merk
+-  **Validasi**: Validasi harga dan stok harus berupa angka positif
+-  **Prepared Statement**: Menggunakan PDO Prepared Statement untuk keamanan
+-  **Statistics Dashboard**: Menampilkan total produk, stok, dan merk
+-  **Responsive Design**: Tampilan menyesuaikan berbagai ukuran layar
+-  **Alert Messages**: Notifikasi sukses/error dengan auto-dismiss
 
 ## 📋 Persyaratan Sistem
 
@@ -193,6 +192,10 @@ Aplikasi ini responsive dan dapat diakses dengan baik di:
 ## 👥 Tim Pengembang
 
 Aplikasi ini dibuat untuk memenuhi **Tugas 2 Pemrograman Web Semester Ganjil 2025/2026**.
+Bintang Mars Satria Tuhu - 202310370311410
+Arya Afif Ramadhani - 202310370311411
+M. Bisri Farizi - 202310370311469
+Muhammad Yapil Islami - 202310370311471
 
 ---
 
@@ -200,12 +203,4 @@ Aplikasi ini dibuat untuk memenuhi **Tugas 2 Pemrograman Web Semester Ganjil 202
 
 Aplikasi ini dibuat untuk keperluan akademik.
 
----
 
-## 📞 Support
-
-Jika ada pertanyaan atau masalah, silakan hubungi tim pengembang atau dosen pengampu.
-
----
-
-**Happy Coding! 🚀**
