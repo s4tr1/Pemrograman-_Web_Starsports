@@ -192,6 +192,10 @@ Aplikasi ini responsive dan dapat diakses dengan baik di:
 ## 👥 Tim Pengembang
 
 Aplikasi ini dibuat untuk memenuhi **Tugas 2 Pemrograman Web Semester Ganjil 2025/2026**.
+Bintang Mars Satria Tuhu - 202310370311410
+Arya Afif Ramadhani - 202310370311411
+M. Bisri Farizi - 202310370311469
+Muhammad Yapil Islami - 202310370311471
 
 ---
 
