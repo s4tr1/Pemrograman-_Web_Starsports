@@ -4,7 +4,6 @@ Aplikasi web manajemen toko sepatu olahraga dengan operasi CRUD lengkap yang dib
 
 ## 🚀 Fitur Utama
 
-### ✅ Fitur Wajib
 - **CREATE**: Tambah data sepatu baru dengan validasi
 - **READ**: Tampilan tabel data sepatu yang dinamis
 - **UPDATE**: Edit data sepatu dengan form yang sudah terisi data lama
@@ -12,13 +11,13 @@ Aplikasi web manajemen toko sepatu olahraga dengan operasi CRUD lengkap yang dib
 - **UI Modern**: Menggunakan Bootstrap 5 dengan custom styling
 - **Animasi**: Smooth animations untuk meningkatkan user experience
 
-### 🌟 Fitur Bonus (Nilai Tambahan)
-- ✅ **Pencarian**: Fitur search berdasarkan nama sepatu atau merk
-- ✅ **Validasi**: Validasi harga dan stok harus berupa angka positif
-- ✅ **Prepared Statement**: Menggunakan PDO Prepared Statement untuk keamanan
-- ✅ **Statistics Dashboard**: Menampilkan total produk, stok, dan merk
-- ✅ **Responsive Design**: Tampilan menyesuaikan berbagai ukuran layar
-- ✅ **Alert Messages**: Notifikasi sukses/error dengan auto-dismiss
+Fitur Tambahan
+-  **Pencarian**: Fitur search berdasarkan nama sepatu atau merk
+-  **Validasi**: Validasi harga dan stok harus berupa angka positif
+-  **Prepared Statement**: Menggunakan PDO Prepared Statement untuk keamanan
+-  **Statistics Dashboard**: Menampilkan total produk, stok, dan merk
+-  **Responsive Design**: Tampilan menyesuaikan berbagai ukuran layar
+-  **Alert Messages**: Notifikasi sukses/error dengan auto-dismiss
 
 ## 📋 Persyaratan Sistem
 
