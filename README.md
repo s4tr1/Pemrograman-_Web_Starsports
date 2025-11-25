@@ -199,12 +199,4 @@ Aplikasi ini dibuat untuk memenuhi **Tugas 2 Pemrograman Web Semester Ganjil 202
 
 Aplikasi ini dibuat untuk keperluan akademik.
 
----
 
-## 📞 Support
-
-Jika ada pertanyaan atau masalah, silakan hubungi tim pengembang atau dosen pengampu.
-
----
-
-**Happy Coding! 🚀**
