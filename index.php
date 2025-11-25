@@ -12,9 +12,12 @@ $logoIcon = $settings['logo_icon'] ?? 'fa-running';
 // Fungsi untuk mendapatkan semua data sepatu
 function getAllSepatu($pdo, $search = '') {
     if (!empty($search)) {
-        $stmt = $pdo->prepare("SELECT * FROM sepatu WHERE nama_sepatu LIKE ? OR merk LIKE ? ORDER BY id DESC");
-        $searchParam = "%$search%";
-        $stmt->execute([$searchParam, $searchParam]);
+        $sql = "SELECT * FROM sepatu
+                WHERE nama_sepatu LIKE ? OR merk LIKE ?
+                ORDER BY id DESC";
+        $stmt = $pdo->prepare($sql);
+        $param = "%$search%";
+        $stmt->execute([$param, $param]);
     } else {
         $stmt = $pdo->query("SELECT * FROM sepatu ORDER BY id DESC");
     }
@@ -743,13 +746,68 @@ $sepatus = getAllSepatu($pdo, $search);
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container text-center">
-            <p>&copy; 2025 <?php echo htmlspecialchars($siteName); ?> - Toko Sepatu Olahraga. All Rights Reserved.</p>
-            <p>Dibuat dengan untuk Tugas Pemrograman Web</p>
-        </div>
-    </footer>
+ <!-- StarSports custom footer -->
+<footer class="site-footer starsports-footer" role="contentinfo" aria-label="StarSports footer">
+  <div class="container footer-grid">
+    <div class="footer-column brands">
+      <h3>Brands @ StarSports</h3>
+      <p>Kami menghadirkan merek-merek terbaik:</p>
+      <ul class="brand-list">
+        <li>Nike</li>
+        <li>Adidas</li>
+        <li>Puma</li>
+        <li>Ortuseight</li>
+        <li>Specs</li>
+        <li>New Balance</li>
+        <li>Mills</li>
+        <li>Mizuno</li>
+        <li>Vans</li>
+        <li>Under Armour</li>
+        <li>Skechers</li>
+        <li>Diadora</li>
+        <li>Airwalk</li>
+      </ul>
+    </div>
+    <div class="footer-column links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#products">Katalog</a></li>
+        <li><a href="#">Promo</a></li>
+        <li><a href="#">Kontak</a></li>
+        <li><a href="#">Bantuan</a></li>
+      </ul>
+    </div>
+    <div class="footer-column contact">
+      <h3>Customer Care</h3>
+      <p class="hours">Mon - Fri, 8:00 - 17:00 WIB</p>
+      <p class="phone">+62 21 54315928</p>
+      <p class="email"><a href="mailto:cs@starsports.local">cs@starsports.local</a></p>
+      <p class="address">StarSports HQ, Jl. Olahraga No.1, Kota</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; <span id="ss-year"></span> StarSports. All rights reserved.</p>
+    <a href="#" id="back-to-top-ss" class="back-to-top-ss" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<script>
+document.getElementById('ss-year')?.textContent = new Date().getFullYear();
+document.getElementById('back-to-top-ss')?.addEventListener('click', function(e){ e.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); });
+</script>
+<style>
+.starsports-footer{background:#f7f7fb;color:#222;padding:40px 20px;font-family:Arial, sans-serif;border-top:1px solid #eee}
+.starsports-footer a{color:#222}
+.footer-grid{display:flex;flex-wrap:wrap;gap:24px;max-width:1200px;margin:0 auto}
+.footer-column{flex:1 1 220px;min-width:180px}
+.footer-column h3{font-size:16px;margin-bottom:12px}
+.brand-list{columns:2;list-style:none;padding:0;margin:0}
+.brand-list li{margin:6px 0;padding-left:6px}
+.footer-bottom{border-top:1px solid rgba(0,0,0,0.06);margin-top:24px;padding-top:16px;display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:24px auto 0}
+@media(max-width:800px){.footer-grid{flex-direction:column}}
+</style>
+<!-- End StarSports footer -->
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
